@@ -20,8 +20,9 @@
 #import <UIKit/UIKit.h>
 
 #import "DemoMessagesViewController.h"
+#import "DemoContactPickerMessageViewController.h"
 
-@interface TableViewController : UITableViewController <JSQDemoViewControllerDelegate>
+@interface TableViewController : UITableViewController <JSQDemoViewControllerDelegate, DemoContactPickerMessageViewControllerDelegate>
 
 - (IBAction)unwindSegue:(UIStoryboardSegue *)sender;
 
