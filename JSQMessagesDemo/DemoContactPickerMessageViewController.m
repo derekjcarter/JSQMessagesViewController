@@ -63,7 +63,6 @@ const int TEXT_LIMIT = 140;
      *  Load up our fake data for the demo
      */
     self.demoData = [[DemoModelData alloc] init];
-    [self.demoData clearMessages];
     
     
     /**
@@ -120,31 +119,38 @@ const int TEXT_LIMIT = 140;
     
     // Setup contact list
     NSDictionary *user1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"1",@"userId",
-                           @"derek",@"login",
-                           @"Derek",@"name",
+                           @"swoz",@"login",
+                           @"Steve W",@"name",
                            @"Male",@"title",
                            @"demo_avatar_woz",@"image",
                            nil];
     
     NSDictionary *user2 = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"userId",
-                           @"steve",@"login",
-                           @"Steve",@"name",
+                           @"sjobs",@"login",
+                           @"Steve J",@"name",
                            @"Male",@"title",
                            @"demo_avatar_jobs",@"image",
                            nil];
+
+    NSDictionary *user3 = [[NSDictionary alloc] initWithObjectsAndKeys:@"3",@"userId",
+                           @"tcook",@"login",
+                           @"Tim C",@"name",
+                           @"Male",@"title",
+                           @"demo_avatar_cook",@"image",
+                           nil];
     
     self.contacts = [NSMutableArray new];
-    [self.contacts addObject:user1];
     [self.contacts addObject:user2];
+    [self.contacts addObject:user1];
+    [self.contacts addObject:user3];
     self.filteredContacts = self.contacts;
     
     // Setup selected contact list
     self.selectedContacts = [NSMutableArray new];
     
     // Setup contact picker
-    self.contactPickerView = [[THContactPickerView alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height+20, self.view.frame.size.width, 100.0)];
-    //self.contactPickerView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-    self.contactPickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.contactPickerView = [[THContactPickerView alloc] initWithFrame:CGRectMake(0, [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height, self.view.frame.size.width, 100.0)];
+    self.contactPickerView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
     self.contactPickerView.limitToOne = NO;
     self.contactPickerView.delegate = self;
     [self.contactPickerView setPlaceholderLabelText:@""];
@@ -164,7 +170,6 @@ const int TEXT_LIMIT = 140;
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.backgroundColor = [UIColor redColor];
     
     [self.view insertSubview:self.tableView belowSubview:self.contactPickerView];
 }
@@ -184,6 +189,17 @@ const int TEXT_LIMIT = 140;
      *  Note: this feature is mostly stable, but still experimental
      */
     self.collectionView.collectionViewLayout.springinessEnabled = [NSUserDefaults springinessSetting];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    self.contactPickerView.frame = CGRectMake(0, [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height, self.view.frame.size.width, self.contactPickerView.frame.size.height);
+    
+    self.tableView.frame = CGRectMake(0,
+                                      self.contactPickerView.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height,
+                                      self.view.frame.size.width,
+                                      self.view.frame.size.height - self.contactPickerView.frame.size.height - self.inputToolbar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height
+                                      );
 }
 
 
@@ -369,6 +385,17 @@ const int TEXT_LIMIT = 140;
                                                           text:text];
     
     [self.demoData.messages addObject:message];
+    
+    
+    // Update the navigation title
+    if (!self.contactPickerView.hidden) {
+        NSString *nameTitle = [[self.selectedContacts valueForKey:@"name"] componentsJoinedByString:@", "];
+        if (nameTitle.length) {
+            self.title = nameTitle;
+        }
+        self.contactPickerView.hidden = YES;
+    }
+    
     
     [self finishSendingMessageAnimated:YES];
 }
@@ -740,6 +767,10 @@ const int TEXT_LIMIT = 140;
     
     [self.contactPickerView resignFirstResponder];
     
+    if (self.selectedContacts) {
+        self.tableView.hidden = YES;
+    }
+    
     return YES;
 }
 
@@ -790,7 +821,7 @@ const int TEXT_LIMIT = 140;
     } else {
         // Place table under text field and calculate the remaining distance
         frame = self.tableView.frame;
-        frame.origin.y = self.contactPickerView.frame.size.height + self.navigationController.navigationBar.frame.size.height + 20;
+        frame.origin.y = self.contactPickerView.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
         frame.size.height = self.view.frame.size.height - self.contactPickerView.frame.size.height - self.inputToolbar.frame.size.height - self.navigationController.navigationBar.frame.size.height - 20;
     }
     
@@ -899,10 +930,7 @@ const int TEXT_LIMIT = 140;
     
     // Change tableview height to offset keyboard height
     CGFloat height = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-    self.tableView.frame = CGRectMake(0,
-                                      self.contactPickerView.frame.size.height + self.navigationController.navigationBar.frame.size.height + 20,
-                                      self.view.frame.size.width,
-                                      self.view.frame.size.height - self.contactPickerView.frame.size.height - self.inputToolbar.frame.size.height - self.navigationController.navigationBar.frame.size.height - 20 - height);
+    self.tableView.frame = CGRectMake(0, self.contactPickerView.frame.size.height + self.navigationController.navigationBar.frame.size.height + 20, self.view.frame.size.width, self.view.frame.size.height - self.contactPickerView.frame.size.height - self.inputToolbar.frame.size.height - self.navigationController.navigationBar.frame.size.height - 20 - height);
     
 }
 
@@ -911,6 +939,10 @@ const int TEXT_LIMIT = 140;
     NSLog(@"keyboardDidShow");
     
     self.keyboardIsShown = YES;
+    
+    if ([self.contactPickerView isFirstResponder]) {
+        self.tableView.hidden = NO;
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification
