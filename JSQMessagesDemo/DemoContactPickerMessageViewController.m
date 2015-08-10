@@ -118,31 +118,26 @@ const int TEXT_LIMIT = 140;
     
     
     // Setup contact list
-    NSDictionary *user1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"1",@"userId",
-                           @"swoz",@"login",
-                           @"Steve W",@"name",
-                           @"Male",@"title",
-                           @"demo_avatar_woz",@"image",
-                           nil];
-    
-    NSDictionary *user2 = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"userId",
-                           @"sjobs",@"login",
-                           @"Steve J",@"name",
-                           @"Male",@"title",
-                           @"demo_avatar_jobs",@"image",
-                           nil];
-
-    NSDictionary *user3 = [[NSDictionary alloc] initWithObjectsAndKeys:@"3",@"userId",
-                           @"tcook",@"login",
-                           @"Tim C",@"name",
-                           @"Male",@"title",
-                           @"demo_avatar_cook",@"image",
-                           nil];
+    NSDictionary *user1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"1",@"userId", @"swoz",@"login", @"Steve W",@"name", @"Male",@"title", @"demo_avatar_woz",@"image", nil];
+    NSDictionary *user2 = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"userId", @"sjobs",@"login", @"Steve J",@"name", @"Male",@"title", @"demo_avatar_jobs",@"image", nil];
+    NSDictionary *user3 = [[NSDictionary alloc] initWithObjectsAndKeys:@"3",@"userId", @"tcook",@"login", @"Tim C",@"name", @"Male",@"title", @"demo_avatar_cook",@"image", nil];
+    NSDictionary *user4 = [[NSDictionary alloc] initWithObjectsAndKeys:@"4",@"userId", @"user4",@"login", @"User 4",@"name", @"Male",@"title", @"goldengate",@"image", nil];
+    NSDictionary *user5 = [[NSDictionary alloc] initWithObjectsAndKeys:@"5",@"userId", @"user5",@"login", @"User 5",@"name", @"Male",@"title", @"goldengate",@"image", nil];
+    NSDictionary *user6 = [[NSDictionary alloc] initWithObjectsAndKeys:@"6",@"userId", @"user6",@"login", @"User 6",@"name", @"Male",@"title", @"goldengate",@"image", nil];
+    NSDictionary *user7 = [[NSDictionary alloc] initWithObjectsAndKeys:@"7",@"userId", @"user7",@"login", @"User 7",@"name", @"Male",@"title", @"goldengate",@"image", nil];
+    NSDictionary *user8 = [[NSDictionary alloc] initWithObjectsAndKeys:@"8",@"userId", @"user8",@"login", @"User 8",@"name", @"Male",@"title", @"goldengate",@"image", nil];
+    NSDictionary *user9 = [[NSDictionary alloc] initWithObjectsAndKeys:@"9",@"userId", @"user9",@"login", @"User 9",@"name", @"Male",@"title", @"goldengate",@"image", nil];
     
     self.contacts = [NSMutableArray new];
-    [self.contacts addObject:user2];
     [self.contacts addObject:user1];
+    [self.contacts addObject:user2];
     [self.contacts addObject:user3];
+    [self.contacts addObject:user4];
+    [self.contacts addObject:user5];
+    [self.contacts addObject:user6];
+    [self.contacts addObject:user7];
+    [self.contacts addObject:user8];
+    [self.contacts addObject:user9];
     self.filteredContacts = self.contacts;
     
     // Setup selected contact list
