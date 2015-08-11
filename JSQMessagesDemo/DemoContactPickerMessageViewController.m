@@ -24,6 +24,8 @@ const int TEXT_LIMIT = 140;
 @property (nonatomic, strong) NSMutableArray* selectedContacts;
 @property (nonatomic) NSInteger selectedCount;
 
+@property (nonatomic, weak) NSLayoutConstraint *toolbarBottomLayoutGuide;
+
 @end
 
 
@@ -393,6 +395,20 @@ const int TEXT_LIMIT = 140;
     
     
     [self finishSendingMessageAnimated:YES];
+}
+
+- (void)keyboardController:(JSQMessagesKeyboardController *)keyboardController keyboardDidChangeFrame:(CGRect)keyboardFrame
+{
+    CGFloat heightFromBottom = CGRectGetMaxY(self.collectionView.frame) - CGRectGetMinY(keyboardFrame);
+    heightFromBottom = MAX(0.0f, heightFromBottom);
+    
+    self.toolbarBottomLayoutGuide.constant = heightFromBottom;
+    [self.view setNeedsUpdateConstraints];
+    [self.view layoutIfNeeded];
+    
+    UIEdgeInsets insets = UIEdgeInsetsMake(self.topLayoutGuide.length + self.topContentAdditionalInset, 0.0f, CGRectGetMaxY(self.collectionView.frame) - CGRectGetMinY(self.inputToolbar.frame), 0.0f);
+    self.collectionView.contentInset = insets;
+    self.collectionView.scrollIndicatorInsets = insets;
 }
 
 - (void)didPressAccessoryButton:(UIButton *)sender
