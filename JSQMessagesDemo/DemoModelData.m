@@ -91,6 +91,11 @@
     return self;
 }
 
+- (void)clearMessages
+{
+    self.messages = [NSMutableArray new];
+}
+
 - (void)loadFakeMessages
 {
     /**

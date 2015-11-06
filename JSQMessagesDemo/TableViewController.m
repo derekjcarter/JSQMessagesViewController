@@ -43,6 +43,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+<<<<<<< HEAD
     switch (section) {
         case 0:
             return 2;
@@ -54,6 +55,14 @@
             return 1;
         default:
             return 0;
+=======
+    if (section == 0) {
+        return 3;
+    }
+    
+    if (section == 2) {
+        return 1;
+>>>>>>> 96befc3cc4f2dce3d5032bdf08c74a8b40301ae2
     }
 }
 
@@ -73,6 +82,9 @@
                 break;
             case 1:
                 cell.textLabel.text = @"Push programmatically";
+                break;
+            case 2:
+                cell.textLabel.text = @"Push with Contact Picker";
                 break;
         }
     }
@@ -135,6 +147,12 @@
             case 1:
             {
                 DemoMessagesViewController *vc = [DemoMessagesViewController messagesViewController];
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            case 2:
+            {
+                DemoContactPickerMessageViewController *vc = [DemoContactPickerMessageViewController messagesViewController];
                 [self.navigationController pushViewController:vc animated:YES];
             }
                 break;
